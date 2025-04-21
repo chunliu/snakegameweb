@@ -8,13 +8,15 @@ on:
   workflow_dispatch:
 
 jobs:
-
   build:
-
     runs-on: self-hosted
-
+    env:
+      IMAGE_NAME: zzq-cr01-ap-southeast-1.cr.bytepluses.com/cl-test-ns/snake-game-web
     steps:
-    - uses: actions/checkout@v3
-
+    - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag snake-game-web:$(date +%s)
+      run: docker build --tag $IMAGE_NAME:${{ github.sha }} .
+    - name: Docker login
+      run: docker login --username=${{ secrets.CR_USERNAME }} --password=${{ secrets.CR_PASSWORD }} zzq-cr01-ap-southeast-1.cr.bytepluses.com
+    - name: Push the Docker image
+      run: docker push $IMAGE_NAME:${{ github.sha }}
