@@ -15,8 +15,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build --tag $IMAGE_NAME:${{ github.sha }} .
+      run: docker build --tag $IMAGE_NAME:${{ github.run_id }} .
     - name: Docker login
       run: docker login --username=${{ secrets.CR_USERNAME }} --password=${{ secrets.CR_PASSWORD }} zzq-cr01-ap-southeast-1.cr.bytepluses.com
     - name: Push the Docker image
-      run: docker push $IMAGE_NAME:${{ github.sha }}
+      run: docker push $IMAGE_NAME:${{ github.run_id }}
