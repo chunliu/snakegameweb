@@ -8,7 +8,6 @@ on:
 env:
   IMAGE_NAME: zzq-cr01-ap-southeast-1.cr.bytepluses.com/cl-test-ns/snake-game-web
 
-
 jobs:
   build docker image:
     runs-on: self-hosted
@@ -23,3 +22,11 @@ jobs:
   deploy to vke:
     runs-on: self-hosted
     needs: build docker image
+    steps:
+    - uses: yokawasa/action-setup-kube-tools@v0.11.2
+      with:
+        kubectl_version: 'v1.32.3'
+        helm: 'v3.17.2'
+    - run: |
+        kubectl version --client
+        helm version
