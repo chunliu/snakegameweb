@@ -30,6 +30,10 @@ jobs:
           helm
         kubectl: 'v1.32.3'
         helm: 'v3.17.2'
-    - run: |
-        kubectl version --client
-        helm version
+    - name: Deploy to VKE
+      uses: wahyd4/kubectl-helm-action@master
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
+      with:
+        args: | 
+          helm install sgw-release ./helm-chart --set image.tag=${{ github.ref_name }}
