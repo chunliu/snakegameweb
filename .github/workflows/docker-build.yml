@@ -21,7 +21,7 @@ jobs:
       run: docker push $IMAGE_NAME:${{ github.ref_name }}
   deploy-to-vke:
     runs-on: self-hosted
-    needs: build docker image
+    needs: build-docker-image
     steps:
     - uses: yokawasa/action-setup-kube-tools@v0.11.2
       with:
