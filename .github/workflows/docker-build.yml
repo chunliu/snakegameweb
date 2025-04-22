@@ -5,12 +5,13 @@ on:
     tags: 
       - 'v*'
   workflow_dispatch:
+env:
+  IMAGE_NAME: zzq-cr01-ap-southeast-1.cr.bytepluses.com/cl-test-ns/snake-game-web
+
 
 jobs:
-  build:
+  build docker image:
     runs-on: self-hosted
-    env:
-      IMAGE_NAME: zzq-cr01-ap-southeast-1.cr.bytepluses.com/cl-test-ns/snake-game-web
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
@@ -19,3 +20,6 @@ jobs:
       run: docker login --username=${{ secrets.CR_USERNAME }} --password=${{ secrets.CR_PASSWORD }} zzq-cr01-ap-southeast-1.cr.bytepluses.com
     - name: Push the Docker image
       run: docker push $IMAGE_NAME:${{ github.ref_name }}
+  deploy to vke:
+    runs-on: self-hosted
+    needs: build docker image
