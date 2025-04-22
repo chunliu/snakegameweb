@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build and Deploy
 
 on:
   push:
@@ -19,14 +19,21 @@ jobs:
       run: docker login --username=${{ secrets.CR_USERNAME }} --password=${{ secrets.CR_PASSWORD }} zzq-cr01-ap-southeast-1.cr.bytepluses.com
     - name: Push the Docker image
       run: docker push $IMAGE_NAME:${{ github.ref_name }}
+      
   deploy-to-vke:
     runs-on: self-hosted
     needs: build-docker-image
     steps:
-    - name: Deploy to VKE
-      uses: wahyd4/kubectl-helm-action@master
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG }}
+    - uses: yokawasa/action-setup-kube-tools@v0.11.2
       with:
-        args: | 
-          helm install sgw-release ./helm-chart --set image.tag=${{ github.ref_name }}
+        setup_tools: |
+          helm
+          kubectl
+        kubectl: '1.32.3'
+        helm: '3.17.3'
+    - name: Setup ~/.kube/config
+      run: |
+        echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
+    - name: Deploy Helm Chart
+      run: |
+        helm install sgw-release ./helm-chart --set image.tag=${{ github.ref_name }}
