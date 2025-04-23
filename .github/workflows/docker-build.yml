@@ -33,6 +33,7 @@ jobs:
         helm: '3.17.3'
     - name: Setup ~/.kube/config
       run: |
+        mkdir -p $HOME/.kube
         echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
     - name: Deploy Helm Chart
       run: |
