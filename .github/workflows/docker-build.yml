@@ -36,4 +36,5 @@ jobs:
         echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
     - name: Deploy Helm Chart
       run: |
+        chmod +x./deploy-helm.sh
         ./deploy-helm.sh ${{ github.ref_name }}
