@@ -36,4 +36,4 @@ jobs:
         echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
     - name: Deploy Helm Chart
       run: |
-        helm install sgw-release ./helm-chart --set image.tag=${{ github.ref_name }}
+        ./deploy-helm.sh ${{ github.ref_name }}
