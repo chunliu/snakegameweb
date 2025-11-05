@@ -6,7 +6,7 @@ set -e
 IMAGE_TAG=$1
 RELEASE_NAME="sgw-release"
 CHART_PATH="./helm-chart"
-NAMESPACE="default" # Or specify the namespace if needed
+NAMESPACE="snakegame" # Or specify the namespace if needed
 
 echo "Checking for existing Helm release: $RELEASE_NAME in namespace $NAMESPACE..."
 
