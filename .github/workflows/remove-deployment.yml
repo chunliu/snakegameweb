@@ -2,7 +2,8 @@ name: Remove deployment
 
 on:
   workflow_dispatch:
-
+  
+jobs:
   uninstall-helm-release:
     runs-on: self-hosted
     steps:
