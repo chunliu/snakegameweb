@@ -23,7 +23,7 @@ if helm list --namespace $NAMESPACE -q --filter "^${RELEASE_NAME}$"; then
   helm upgrade $RELEASE_NAME $CHART_PATH \
     --namespace $NAMESPACE \
     --set image.tag=$IMAGE_TAG \
-    --install # --install flag ensures it installs if upgrade fails because release was deleted manually
+    --install \
     --create-namespace
 else
   echo "Release '$RELEASE_NAME' not found. Installing..."
