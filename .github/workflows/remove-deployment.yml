@@ -2,11 +2,12 @@ name: Remove deployment
 
 on:
   workflow_dispatch:
-  
+
 jobs:
   uninstall-helm-release:
     runs-on: self-hosted
     steps:
+    - uses: actions/checkout@v4
     - uses: yokawasa/action-setup-kube-tools@v0.11.2
       with:
         setup-tools: |
