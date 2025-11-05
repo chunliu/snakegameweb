@@ -1,0 +1,23 @@
+name: Remove deployment
+
+on:
+  workflow_dispatch:
+
+  uninstall-helm-release:
+    runs-on: self-hosted
+    steps:
+    - uses: yokawasa/action-setup-kube-tools@v0.11.2
+      with:
+        setup-tools: |
+          helm
+          kubectl
+        kubectl: '1.32.3'
+        helm: '3.17.3'
+    - name: Setup ~/.kube/config
+      run: |
+        mkdir -p $HOME/.kube
+        echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
+    - name: Deploy Helm Chart
+      run: |
+        chmod +x ./delete-helm.sh
+        ./delete-helm.sh ${{ github.ref_name }}
